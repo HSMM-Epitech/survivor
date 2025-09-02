@@ -2,6 +2,7 @@ class StartupEntity {
     constructor({
         id,
         name,
+        password,
         legalStatus = null,
         address = null,
         email,
@@ -22,6 +23,7 @@ class StartupEntity {
 
         this.id = id;
         this.name = name;
+        this.password = password;
         this.legalStatus = legalStatus;
         this.address = address;
         this.email = email;
@@ -41,6 +43,7 @@ class StartupEntity {
         return {
             id: this.id,
             name: this.name,
+            password: this.password,
             legalStatus: this.legalStatus,
             address: this.address,
             email: this.email,
@@ -58,21 +61,23 @@ class StartupEntity {
     }
 
     updateInfo({
-       name,
-       legalStatus,
-       address,
-       email,
-       phone,
-       description,
-       websiteUrl,
-       socialMediaUrl,
-       projectStatus,
-       needs,
-       sector,
-       maturity,
-       founders
+        name,
+        password,
+        legalStatus,
+        address,
+        email,
+        phone,
+        description,
+        websiteUrl,
+        socialMediaUrl,
+        projectStatus,
+        needs,
+        sector,
+        maturity,
+        founders
     }) {
         if (name !== undefined) this.name = name;
+        if (password !== undefined) this.password = password;
         if (legalStatus !== undefined) this.legalStatus = legalStatus;
         if (address !== undefined) this.address = address;
         if (email !== undefined) this.email = email;
