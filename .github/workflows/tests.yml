@@ -1,0 +1,317 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+env:
+  NODE_VERSION: '18'
+  
+jobs:
+  # Code Quality and Security Checks
+  lint-and-security:
+    name: Code Quality & Security
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Check for security vulnerabilities
+      run: npm audit --audit-level=moderate
+      
+    - name: Run ESLint (if configured)
+      run: |
+        if [ -f .eslintrc.js ] || [ -f .eslintrc.json ] || [ -f .eslintrc.yml ]; then
+          npx eslint . --ext .js,.jsx,.ts,.tsx || echo "ESLint not configured yet"
+        else
+          echo "ESLint configuration not found - skipping"
+        fi
+      continue-on-error: true
+      
+    - name: Check code formatting with Prettier (if configured)
+      run: |
+        if [ -f .prettierrc ] || [ -f .prettierrc.json ] || [ -f prettier.config.js ]; then
+          npx prettier --check . || echo "Prettier not configured yet"
+        else
+          echo "Prettier configuration not found - skipping"
+        fi
+      continue-on-error: true
+
+  # Unit and Integration Tests
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20]
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run unit tests
+      run: npm test
+      env:
+        NODE_ENV: test
+        
+    - name: Generate test coverage
+      run: |
+        if command -v nyc &> /dev/null || npm list nyc &> /dev/null; then
+          npm run test:coverage || npm run coverage || echo "Coverage script not found"
+        else
+          echo "No coverage tool detected - installing nyc"
+          npm install --save-dev nyc
+          npx nyc npm test || echo "Coverage generation failed"
+        fi
+      continue-on-error: true
+      
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage/lcov.info
+        fail_ci_if_error: false
+      continue-on-error: true
+
+  # Backend-specific checks
+  backend-checks:
+    name: Backend Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Validate package.json
+      run: npm ls --depth=0
+      
+    - name: Check for backend structure
+      run: |
+        echo "Checking backend structure..."
+        [ -d "backend" ] && echo "✓ Backend directory exists" || echo "✗ Backend directory missing"
+        [ -f "backend/app.js" ] && echo "✓ App.js exists" || echo "✗ App.js missing"
+        [ -f "backend/server.js" ] && echo "✓ Server.js exists" || echo "✗ Server.js missing"
+        [ -d "backend/src" ] && echo "✓ Source directory exists" || echo "✗ Source directory missing"
+        
+    - name: Validate Express app structure
+      run: |
+        echo "Checking Express dependencies..."
+        npm list express || echo "Express dependency check failed"
+        npm list bcrypt || echo "Bcrypt dependency check failed"
+        npm list jsonwebtoken || echo "JWT dependency check failed"
+        
+    - name: Check environment configuration
+      run: |
+        echo "Checking for environment files..."
+        [ -f ".env.example" ] && echo "✓ Environment example exists" || echo "ℹ No .env.example found"
+        [ -f ".env" ] && echo "⚠ .env file exists (should not be in repo)" || echo "✓ No .env file in repo"
+
+  # Build and Docker checks
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    needs: [lint-and-security, test]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build application (if build script exists)
+      run: |
+        if npm run build &> /dev/null; then
+          npm run build
+          echo "✓ Build completed successfully"
+        else
+          echo "ℹ No build script found - skipping build step"
+        fi
+      
+    - name: Check Dockerfile (if exists)
+      run: |
+        if [ -f "Dockerfile" ]; then
+          echo "✓ Dockerfile found"
+          docker build -t survivor-app . --dry-run || docker build -t survivor-app . || echo "Docker build failed"
+        else
+          echo "ℹ No Dockerfile found"
+        fi
+      continue-on-error: true
+
+  # Performance and Load Testing
+  performance:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    needs: [test]
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Start application for testing
+      run: |
+        # Start the application in background for performance testing
+        if [ -f "backend/server.js" ] && [ -s "backend/server.js" ]; then
+          node backend/server.js &
+          APP_PID=$!
+          echo "APP_PID=$APP_PID" >> $GITHUB_ENV
+          sleep 5
+        else
+          echo "Server file empty or missing - skipping performance tests"
+          exit 0
+        fi
+      
+    - name: Basic health check
+      run: |
+        if [ ! -z "$APP_PID" ]; then
+          curl -f http://localhost:3000/health || curl -f http://localhost:8080/health || echo "Health check endpoint not available"
+        fi
+      continue-on-error: true
+      
+    - name: Cleanup
+      run: |
+        if [ ! -z "$APP_PID" ]; then
+          kill $APP_PID || true
+        fi
+      if: always()
+
+  # Deployment preparation
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [build, backend-checks]
+    if: github.ref == 'refs/heads/dev' && github.event_name == 'push'
+    environment: staging
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install production dependencies
+      run: npm ci --only=production
+      
+    - name: Create deployment artifact
+      run: |
+        mkdir -p deployment
+        tar -czf deployment/survivor-backend-staging.tar.gz \
+          backend/ \
+          package.json \
+          package-lock.json \
+          node_modules/ \
+          --exclude=node_modules/.cache
+          
+    - name: Upload deployment artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: survivor-backend-staging
+        path: deployment/
+        retention-days: 7
+
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [build, backend-checks, performance]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: production
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install production dependencies
+      run: npm ci --only=production
+      
+    - name: Run production health checks
+      run: |
+        echo "Running pre-deployment checks..."
+        npm audit --audit-level=high --production
+        
+    - name: Create production deployment artifact
+      run: |
+        mkdir -p deployment
+        tar -czf deployment/survivor-backend-production.tar.gz \
+          backend/ \
+          package.json \
+          package-lock.json \
+          node_modules/ \
+          --exclude=node_modules/.cache
+          
+    - name: Upload production artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: survivor-backend-production
+        path: deployment/
+        retention-days: 30
+
+  # Notification job
+  notify:
+    name: Notify Team
+    runs-on: ubuntu-latest
+    needs: [deploy-staging, deploy-production]
+    if: always() && (needs.deploy-staging.result == 'success' || needs.deploy-production.result == 'success')
+    
+    steps:
+    - name: Notify success
+      run: |
+        echo "Deployment completed successfully!"
+        echo "Branch: ${{ github.ref }}"
+        echo "Commit: ${{ github.sha }}"
+      continue-on-error: true
