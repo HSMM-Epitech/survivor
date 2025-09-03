@@ -3,9 +3,12 @@ FROM alpine:3.22.1
 WORKDIR /server
 
 RUN apk update && apk add nodejs npm
-RUN npm install express
 
-COPY ./backend/* /server/
+COPY ./backend/package.json ./
+COPY ./backend ./
+
+RUN ls -aR
+RUN npm install
 
 EXPOSE 4242
 

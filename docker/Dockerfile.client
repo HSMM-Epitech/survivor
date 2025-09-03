@@ -1,0 +1,17 @@
+FROM alpine:3.22.1
+
+WORKDIR /client
+
+RUN apk update && apk add nodejs npm
+
+COPY ./frontend/package.json ./
+COPY ./frontend/ ./
+
+RUN npm install
+RUN npm install -g serve
+
+RUN npm run build
+
+EXPOSE 4240
+
+ENTRYPOINT ["serve", "-s", "/client/dist", "-l", "4240"]
