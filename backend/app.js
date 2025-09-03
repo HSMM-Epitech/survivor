@@ -6,7 +6,7 @@ const PORT = 4242
 
 // Import swagger documentation
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = YAML.load("@doc/swagger.yaml");
+const swaggerDocument = YAML.load("./doc/swagger.yaml");
 
 // Swagger documentation route
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

@@ -2,7 +2,7 @@
   "name": "survivor",
   "version": "1.0.0",
   "description": "An incubator platform for startups and investors",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node backend/app.js",
     "dev": "nodemon backend/app.js",
@@ -44,7 +44,6 @@
     "@repositories": "src/repositories",
     "@controllers": "src/controllers",
     "@routes": "src/routes",
-    "@config": "src/config",
-    "@docs": "../docs"
+    "@config": "src/config"
   }
 }
