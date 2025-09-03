@@ -85,7 +85,7 @@ CREATE TABLE "News" (
   "title" varchar(255) NOT NULL,
   "location" varchar(255),
   "description" text NOT NULL,
-  "startup_id" integer NOT NULL
+  "company_id" integer NOT NULL
 );
 
 CREATE TABLE "PartnerTypes" (
@@ -162,6 +162,8 @@ ALTER TABLE "Investors" ADD FOREIGN KEY ("investment_focus_id") REFERENCES "Inve
 
 ALTER TABLE "Investors" ADD FOREIGN KEY ("investor_type_id") REFERENCES "InvestorTypes" ("id");
 
+ALTER TABLE "Investors" ADD FOREIGN KEY ("legal_status_id") REFERENCES "LegalStatus" ("id");
+
 ALTER TABLE "InvestmentFocus" ADD FOREIGN KEY ("sector_id") REFERENCES "Sectors" ("id");
 
 ALTER TABLE "Startups" ADD FOREIGN KEY ("company_id") REFERENCES "Companies" ("id");
@@ -178,7 +180,7 @@ ALTER TABLE "Projects" ADD FOREIGN KEY ("project_status_id") REFERENCES "Project
 
 ALTER TABLE "SocialMedias" ADD FOREIGN KEY ("company_id") REFERENCES "Companies" ("id");
 
-ALTER TABLE "News" ADD FOREIGN KEY ("startup_id") REFERENCES "Startups" ("id");
+ALTER TABLE "News" ADD FOREIGN KEY ("company_id") REFERENCES "Companies" ("id");
 
 ALTER TABLE "EventDates" ADD FOREIGN KEY ("event_id") REFERENCES "Events" ("id");
 
