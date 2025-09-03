@@ -123,7 +123,7 @@ jobs:
 
   push_to_mirror:
     needs: [check_coding_style, run_tests, check_repo, check_program_compilation]
-    if: ${{ github.event_name == 'push' && github.actor != 'github-actions[bot]' && startsWith(github.repository, 'Hugo-Fabresse') }}
+    if: ${{ github.event_name == 'push' && github.actor != 'github-actions[bot]' && startsWith(github.repository, 'HexaTeam-By-Epitech') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
