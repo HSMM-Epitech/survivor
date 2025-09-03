@@ -12,4 +12,6 @@ RUN npm install
 
 EXPOSE 4242
 
+# Remove already existing node_modules dir
+RUN [ -d "node_modules" ] && rm -rf node_modules
 ENTRYPOINT ["node", "app.js"]
