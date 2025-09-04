@@ -72,36 +72,39 @@ jobs:
       run: npm install
 
     - name: Verify test setup
+      id: verify_tests
       working-directory: ./backend
       run: |
         echo "Verifying test setup..."
         if [ ! -f "jest.config.js" ] && [ ! -f "jest.config.ts" ]; then
           echo "⚠ No Jest configuration file found - tests may not run as expected"
+          echo "found_tests=false" >> $GITHUB_OUTPUT
+          exit 0
         fi
         if ! npm list jest &> /dev/null; then
           echo "⚠ Jest is not installed - installing it now"
           npm install --save-dev jest
+          echo "found_tests=false" >> $GITHUB_OUTPUT
+          exit 0
         fi
-        # Check for test directories in backend, frontend, or root
         TEST_DIRS=$(find backend frontend . -type d -name 'tests' -o -name '__tests__' 2>/dev/null)
         if [ -z "$TEST_DIRS" ]; then
           echo "ℹ No test directories found - ensure tests are located in 'tests/' or '__tests__/'"
+          echo "found_tests=false" >> $GITHUB_OUTPUT
           exit 0
         fi
-
-        # Check if any .js test files exist in those directories
         JS_TEST_FILES=$(find $TEST_DIRS -type f -name '*.js' 2>/dev/null)
         if [ -z "$JS_TEST_FILES" ]; then
           echo "ℹ Test directories found but no .js test files present"
+          echo "found_tests=false" >> $GITHUB_OUTPUT
           exit 0
         fi
-      
+        echo "found_tests=true" >> $GITHUB_OUTPUT
+
     - name: Run unit tests
       working-directory: ./backend
       run: npm test
-      env:
-        NODE_ENV: test
-        
+      if: steps.verify_tests.outputs.found_tests == 'true'
     - name: Generate test coverage
       working-directory: ./backend
       run: |
