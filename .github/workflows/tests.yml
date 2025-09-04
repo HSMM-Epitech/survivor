@@ -23,18 +23,19 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
         
-    - name: Install dependencies
-      run: npm ci
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: npm install
       
-    - name: Check for security vulnerabilities
+    - name: Check for security vulnerabilities (Backend)
+      working-directory: ./backend
       run: npm audit --audit-level=moderate
       
     - name: Run ESLint (if configured)
       run: |
         if [ -f .eslintrc.js ] || [ -f .eslintrc.json ] || [ -f .eslintrc.yml ]; then
-          npx eslint . --ext .js,.jsx,.ts,.tsx || echo "ESLint not configured yet"
+          npx eslint backend/ --ext .js,.jsx,.ts,.tsx || echo "ESLint not configured yet"
         else
           echo "ESLint configuration not found - skipping"
         fi
@@ -43,7 +44,7 @@ jobs:
     - name: Check code formatting with Prettier (if configured)
       run: |
         if [ -f .prettierrc ] || [ -f .prettierrc.json ] || [ -f prettier.config.js ]; then
-          npx prettier --check . || echo "Prettier not configured yet"
+          npx prettier --check backend/ || echo "Prettier not configured yet"
         else
           echo "Prettier configuration not found - skipping"
         fi
@@ -65,17 +66,19 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
         
-    - name: Install dependencies
-      run: npm ci
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: npm install
       
     - name: Run unit tests
+      working-directory: ./backend
       run: npm test
       env:
         NODE_ENV: test
         
     - name: Generate test coverage
+      working-directory: ./backend
       run: |
         if command -v nyc &> /dev/null || npm list nyc &> /dev/null; then
           npm run test:coverage || npm run coverage || echo "Coverage script not found"
@@ -90,7 +93,7 @@ jobs:
       uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage/lcov.info
+        file: ./backend/coverage/lcov.info
         fail_ci_if_error: false
       continue-on-error: true
 
@@ -107,12 +110,13 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
         
-    - name: Install dependencies
-      run: npm ci
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: npm install
       
     - name: Validate package.json
+      working-directory: ./backend
       run: npm ls --depth=0
       
     - name: Check for backend structure
@@ -124,6 +128,7 @@ jobs:
         [ -d "backend/src" ] && echo "✓ Source directory exists" || echo "✗ Source directory missing"
         
     - name: Validate Express app structure
+      working-directory: ./backend
       run: |
         echo "Checking Express dependencies..."
         npm list express || echo "Express dependency check failed"
@@ -150,12 +155,13 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
         
-    - name: Install dependencies
-      run: npm ci
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: npm install
       
     - name: Build application (if build script exists)
+      working-directory: ./backend
       run: |
         if npm run build &> /dev/null; then
           npm run build
@@ -166,11 +172,11 @@ jobs:
       
     - name: Check Dockerfile (if exists)
       run: |
-        if [ -f "Dockerfile" ]; then
-          echo "✓ Dockerfile found"
-          docker build -t survivor-app . --dry-run || docker build -t survivor-app . || echo "Docker build failed"
+        if [ -f "docker/Dockerfile.server" ]; then
+          echo "✓ Server Dockerfile found"
+          docker build -f docker/Dockerfile.server -t survivor-backend . || echo "Docker build failed"
         else
-          echo "ℹ No Dockerfile found"
+          echo "ℹ No server Dockerfile found"
         fi
       continue-on-error: true
 
@@ -189,16 +195,16 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
         
-    - name: Install dependencies
-      run: npm ci
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: npm install
       
     - name: Start application for testing
       run: |
         # Start the application in background for performance testing
         if [ -f "backend/server.js" ] && [ -s "backend/server.js" ]; then
-          node backend/server.js &
+          cd backend && node server.js &
           APP_PID=$!
           echo "APP_PID=$APP_PID" >> $GITHUB_ENV
           sleep 5
@@ -237,20 +243,17 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
         
     - name: Install production dependencies
-      run: npm ci --only=production
+      working-directory: ./backend
+      run: npm install --only=production
       
     - name: Create deployment artifact
       run: |
         mkdir -p deployment
         tar -czf deployment/survivor-backend-staging.tar.gz \
           backend/ \
-          package.json \
-          package-lock.json \
-          node_modules/ \
-          --exclude=node_modules/.cache
+          --exclude=backend/node_modules/.cache
           
     - name: Upload deployment artifact
       uses: actions/upload-artifact@v4
@@ -274,12 +277,13 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
         
     - name: Install production dependencies
-      run: npm ci --only=production
+      working-directory: ./backend
+      run: npm install --only=production
       
     - name: Run production health checks
+      working-directory: ./backend
       run: |
         echo "Running pre-deployment checks..."
         npm audit --audit-level=high --production
@@ -289,10 +293,7 @@ jobs:
         mkdir -p deployment
         tar -czf deployment/survivor-backend-production.tar.gz \
           backend/ \
-          package.json \
-          package-lock.json \
-          node_modules/ \
-          --exclude=node_modules/.cache
+          --exclude=backend/node_modules/.cache
           
     - name: Upload production artifact
       uses: actions/upload-artifact@v4
