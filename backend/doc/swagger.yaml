@@ -1,0 +1,495 @@
+openapi: 3.0.0
+info:
+  title: JEB Incubator
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:4242
+
+paths:
+
+  /projects:
+    get:
+      summary: Get all projects
+      tags:
+        - Projects
+      responses:
+        '200':
+          description: List of projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+        '500':
+          description: Internal server error
+
+    post:
+      summary: Create a new project
+      tags:
+        - Projects
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectCreateRequest'
+      responses:
+        '201':
+          description: Project created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Bad request - Invalid data
+        '500':
+          description: Internal server error
+
+  /projects/{id}:
+    get:
+      summary: Get a project by ID
+      tags:
+        - Projects
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Project ID
+      responses:
+        '200':
+          description: Project found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '404':
+          description: Project not found
+        '500':
+          description: Internal server error
+
+    put:
+      summary: Update a project by ID
+      tags:
+        - Projects
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Project ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectUpdateRequest'
+      responses:
+        '200':
+          description: Project updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Bad request - Invalid data
+        '404':
+          description: Project not found
+        '500':
+          description: Internal server error
+
+    delete:
+      summary: Delete a project by ID
+      tags:
+        - Projects
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Project ID
+      responses:
+        '204':
+          description: Project deleted successfully
+        '404':
+          description: Project not found
+        '500':
+          description: Internal server error
+
+  /auth/signup:
+    post:
+      summary: Register a new startup
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        '200':
+          description: Successful registration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Bad request
+
+  /auth/login:
+    post:
+      summary: Login as a startup
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Invalid credentials
+
+  /users:
+    get:
+      summary: Get all users
+      tags:
+        - Users
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+    post:
+      summary: Create a user
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Created
+
+  /users/{id}:
+    get:
+      summary: Get a user by ID
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+
+    put:
+      summary: Update a user by ID
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  account:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                      name:
+                        type: string
+                      image_path:
+                        type: string
+                        nullable: true
+                      last_updated_at:
+                        type: string
+                        format: date-time
+        '404':
+          description: User not found
+
+    delete:
+      summary: Delete a user by ID
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: User deleted successfully
+        '404':
+          description: User not found
+
+components:
+  schemas:
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique project identifier
+        startup_id:
+          type: integer
+          description: ID of the startup that owns this project
+        name:
+          type: string
+          description: Project name
+        project_status_id:
+          type: integer
+          nullable: true
+          description: Status of the project
+        needs:
+          type: string
+          description: Project needs and requirements
+        sector_id:
+          type: integer
+          nullable: true
+          description: Industry sector ID
+        maturity:
+          type: string
+          description: Project maturity level
+        created_at:
+          type: string
+          format: date-time
+          description: Project creation timestamp
+        updated_at:
+          type: string
+          format: date-time
+          description: Last update timestamp
+        Startups:
+          $ref: '#/components/schemas/Startup'
+          description: Associated startup information
+
+    ProjectCreateRequest:
+      type: object
+      required:
+        - startup_id
+        - name
+      properties:
+        startup_id:
+          type: integer
+          description: ID of the startup that owns this project
+        name:
+          type: string
+          description: Project name
+          minLength: 1
+          maxLength: 255
+        project_status_id:
+          type: integer
+          nullable: true
+          description: Status of the project
+        needs:
+          type: string
+          description: Project needs and requirements
+          maxLength: 1000
+        sector_id:
+          type: integer
+          nullable: true
+          description: Industry sector ID
+        maturity:
+          type: string
+          description: Project maturity level
+          maxLength: 100
+
+    ProjectUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Project name
+          minLength: 1
+          maxLength: 255
+        project_status_id:
+          type: integer
+          nullable: true
+          description: Status of the project
+        needs:
+          type: string
+          description: Project needs and requirements
+          maxLength: 1000
+        sector_id:
+          type: integer
+          nullable: true
+          description: Industry sector ID
+        maturity:
+          type: string
+          description: Project maturity level
+          maxLength: 100
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        account_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        last_updated_at:
+          type: string
+          format: date-time
+
+    UserCreateRequest:
+      type: object
+      required:
+        - account_id
+      properties:
+        account_id:
+          type: integer
+
+    UserUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+
+    SignupRequest:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+
+    Startup:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        legalStatus:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        websiteUrl:
+          type: string
+          nullable: true
+        socialMediaUrl:
+          type: string
+          nullable: true
+        projectStatus:
+          type: string
+          nullable: true
+        needs:
+          type: array
+          items:
+            type: string
+        sector:
+          type: string
+          nullable: true
+        maturity:
+          type: string
+          nullable: true
+        founders:
+          type: array
+          items:
+            type: object
