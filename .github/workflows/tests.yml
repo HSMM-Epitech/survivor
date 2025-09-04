@@ -94,7 +94,8 @@ jobs:
         echo "Setting up test database..."
         npx prisma generate
         npx prisma db push --force-reset
-        echo "Database setup complete"
+        npm run db:seed
+        echo "Database setup and seeding complete"
 
     - name: Verify test setup
       id: verify_tests
