@@ -4,8 +4,8 @@
   "description": "An incubator platform for startups and investors",
   "main": "app.js",
   "scripts": {
-    "start": "node backend/app.js",
-    "dev": "nodemon backend/app.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -29,7 +29,7 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "eslint": "9.33.0",
+    "eslint": "9.34.0",
     "jest": "30.1.3",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.3",
