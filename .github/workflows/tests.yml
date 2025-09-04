@@ -87,13 +87,13 @@ jobs:
           echo "found_tests=false" >> $GITHUB_OUTPUT
           exit 0
         fi
-        TEST_DIRS=$(find backend frontend . -type d -name 'tests' -o -name '__tests__' 2>/dev/null)
+        TEST_DIRS=$(find . -type d -name 'tests' -o -name '__tests__' 2>/dev/null | grep -v node_modules || true)
         if [ -z "$TEST_DIRS" ]; then
           echo "ℹ No test directories found - ensure tests are located in 'tests/' or '__tests__/'"
           echo "found_tests=false" >> $GITHUB_OUTPUT
           exit 0
         fi
-        JS_TEST_FILES=$(find $TEST_DIRS -type f -name '*.js' 2>/dev/null)
+        JS_TEST_FILES=$(find $TEST_DIRS -type f -name '*.js' 2>/dev/null || true)
         if [ -z "$JS_TEST_FILES" ]; then
           echo "ℹ Test directories found but no .js test files present"
           echo "found_tests=false" >> $GITHUB_OUTPUT
