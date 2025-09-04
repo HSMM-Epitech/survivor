@@ -11,6 +11,9 @@ const swaggerDocument = YAML.load("./doc/swagger.yaml");
 // Swagger documentation route
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+// Routes
+app.use('/users', require('@routes/user'));
+
 app.get('/', (req, res) => {
     res.send('Hello Otter World !')
 })
