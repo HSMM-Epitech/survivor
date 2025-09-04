@@ -313,9 +313,9 @@ jobs:
     - name: Create deployment artifact
       run: |
         mkdir -p deployment
-        tar -czf deployment/survivor-backend-staging.tar.gz \
-          backend/ \
-          --exclude=backend/node_modules/.cache
+        tar -czf deployment/survivor-backend-production.tar.gz \
+  --exclude=backend/node_modules/.cache \
+  backend/
           
     - name: Upload deployment artifact
       uses: actions/upload-artifact@v4
@@ -354,8 +354,8 @@ jobs:
       run: |
         mkdir -p deployment
         tar -czf deployment/survivor-backend-production.tar.gz \
-          backend/ \
-          --exclude=backend/node_modules/.cache
+  --exclude=backend/node_modules/.cache \
+  backend/
           
     - name: Upload production artifact
       uses: actions/upload-artifact@v4
