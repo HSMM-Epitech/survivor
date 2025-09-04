@@ -314,8 +314,8 @@ jobs:
       run: |
         mkdir -p deployment
         tar -czf deployment/survivor-backend-staging.tar.gz \
-          --exclude=backend/node_modules/.cache \
-          backend/
+          backend/ \
+          --exclude=backend/node_modules/.cache
           
     - name: Upload deployment artifact
       uses: actions/upload-artifact@v4
