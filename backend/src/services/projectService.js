@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const ProjectRepository = require('@repositories/projectRepository');
 const ProjectEntity = require('@entities/Project');
 
@@ -23,7 +22,7 @@ class ProjectService {
             sector_id: data.sector_id,
             maturity: data.maturity
         });
-        
+
         const projectRepo = new ProjectRepository();
         return await projectRepo.create({ data: entity.toObject() });
     }
@@ -43,7 +42,7 @@ class ProjectService {
 
         return await projectRepo.update(id, updateData);
     }
-    
+
     static async deleteProject(id) {
         const projectRepo = new ProjectRepository();
         const exists = await projectRepo.findById(id);

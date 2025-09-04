@@ -18,6 +18,7 @@ class ProjectController {
             if (!project) return res.status(404).json({ error: 'Project not found' });
             return res.json(project);
         } catch (error) {
+            void error;
             return res.status(500).json({ error: 'Internal server error' });
         }
     }
@@ -49,6 +50,7 @@ class ProjectController {
             if (!deleted) return res.status(404).json({ error: 'Project not found' });
             return res.status(204).send();
         } catch (error) {
+            void error;
             return res.status(500).json({ error: 'Internal server error' });
         }
     }

@@ -1,8 +1,8 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 require("module-alias/register");
 const YAML = require("yamljs");
-const PORT = 4242
+const PORT = 4242;
 
 // Import swagger documentation
 const swaggerUi = require("swagger-ui-express");
@@ -19,14 +19,14 @@ app.use('/users', require('@routes/user'));
 app.use('/projects', require('@routes/project'));
 
 app.get('/', (req, res) => {
-    res.send('Hello Otter World !')
-})
+    res.send('Hello Otter World !');
+});
 
 // Only start the server when this file is run directly
 if (require.main === module) {
     app.listen(PORT, () => {
-        console.log(`Minimal backend listening on port ${PORT}`)
-    })
+        console.log(`Minimal backend listening on port ${PORT}`);
+    });
 }
 
 module.exports = app;

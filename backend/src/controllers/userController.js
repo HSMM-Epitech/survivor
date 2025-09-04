@@ -18,6 +18,7 @@ class UserController {
             if (!user) return res.status(404).json({ error: 'User not found' });
             return res.json(user);
         } catch (error) {
+            void error;
             return res.status(500).json({ error: 'Internal server error' });
         }
     }
@@ -50,6 +51,7 @@ class UserController {
             if (!deleted) return res.status(404).json({ error: 'User not found' });
             return res.status(204).send();
         } catch (error) {
+            void error;
             return res.status(500).json({ error: 'Internal server error' });
         }
     }
