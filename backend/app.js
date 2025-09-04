@@ -8,6 +8,9 @@ const PORT = 4242
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = YAML.load("./doc/swagger.yaml");
 
+// Middleware pour parser le JSON
+app.use(express.json());
+
 // Swagger documentation route
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

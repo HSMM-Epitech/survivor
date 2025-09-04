@@ -2,24 +2,30 @@ const prisma = require('@config/prisma');
 
 class UserRepository {
     static async findAll() {
-        return prisma.users.findMany();
+        return prisma.users.findMany({
+            include: {
+                account: true
+            }
+        });
     }
 
     static async findById(id) {
         return prisma.users.findUnique({
-            where: { id: id },
+            where: { id },
+            include: {
+                account: true
+            }
         });
     }
 
     static async create(data) {
         return prisma.users.create({
             data: {
-                ...data,
-                Accounts: {
-                    connect: { id: data.account_id }
-                }
+                account_id: data.account_id
             },
-            include: { Accounts: true }
+            include: {
+                account: true
+            }
         });
     }
 
@@ -27,7 +33,9 @@ class UserRepository {
         return prisma.users.update({
             where: { id },
             data,
-            include: { Accounts: true }
+            include: {
+                account: true
+            }
         });
     }
 

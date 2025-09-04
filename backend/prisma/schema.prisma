@@ -188,7 +188,7 @@ model Users {
   Admins     Admins[]
   Founders   Founders[]
   Investors  Investors[]
-  Accounts   Accounts    @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  account    Accounts @relation(fields: [account_id], references: [id])
 }
 
 model ValidationErrors {

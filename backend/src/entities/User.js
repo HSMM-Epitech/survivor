@@ -1,14 +1,12 @@
 class UserEntity {
-    constructor({ id, emails, name, role, founderId = null, investorId = null, password, isActive = true}) {
-        if (!emails) throw new Error("Email is required");
+    constructor({ id, email, name, founderId = null, investorId = null, password, isActive = true }) {
+        if (!email) throw new Error("Email is required");
         if (!name) throw new Error("Name is required");
-        if (!role) throw new Error("Role is required");
         if (!password) throw new Error("Password is required");
 
         this.id = id;
-        this.emails = emails;
+        this.email = email;
         this.name = name;
-        this.role = role;
         this.founderId = founderId;
         this.investorId = investorId;
         this.password = password;
@@ -18,9 +16,8 @@ class UserEntity {
     toObject() {
         return {
             id: this.id,
-            emails: this.emails,
+            email: this.email,
             name: this.name,
-            role: this.role,
             founderId: this.founderId,
             investorId: this.investorId,
             isActive: this.isActive

@@ -7,6 +7,49 @@ servers:
   - url: http://localhost:4242
 
 paths:
+
+  /auth/signup:
+    post:
+      summary: Register a new startup
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        '200':
+          description: Successful registration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Bad request
+
+  /auth/login:
+    post:
+      summary: Login as a startup
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Invalid credentials
+
   /users:
     get:
       summary: Get all users
@@ -23,7 +66,7 @@ paths:
                   $ref: '#/components/schemas/User'
 
     post:
-      summary: Create a new user
+      summary: Create a user
       tags:
         - Users
       requestBody:
@@ -31,14 +74,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserCreateRequest'
+              type: object
+              required:
+                - name
+                - email
+                - password
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
       responses:
         '201':
-          description: User created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
+          description: Created
 
   /users/{id}:
     get:
@@ -83,7 +133,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  account:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                      name:
+                        type: string
+                      image_path:
+                        type: string
+                        nullable: true
+                      last_updated_at:
+                        type: string
+                        format: date-time
         '404':
           description: User not found
 
@@ -102,48 +170,6 @@ paths:
           description: User deleted successfully
         '404':
           description: User not found
-
-  /auth/signup:
-    post:
-      summary: Register a new startup
-      tags:
-        - Auth
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SignupRequest'
-      responses:
-        '200':
-          description: Successful registration
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthResponse'
-        '400':
-          description: Bad request
-
-  /auth/login:
-    post:
-      summary: Login as a startup
-      tags:
-        - Auth
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginRequest'
-      responses:
-        '200':
-          description: Successful login
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AuthResponse'
-        '401':
-          description: Invalid credentials
 
 components:
   schemas:
@@ -172,8 +198,12 @@ components:
     UserUpdateRequest:
       type: object
       properties:
-        account_id:
-          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
 
     SignupRequest:
       type: object

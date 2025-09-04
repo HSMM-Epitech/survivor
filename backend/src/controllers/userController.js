@@ -24,6 +24,7 @@ class UserController {
 
     static async createUser(req, res) {
         try {
+            console.log(req.body);
             const user = await UserService.createUser(req.body);
             return res.status(201).json(user);
         } catch (error) {
