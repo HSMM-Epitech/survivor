@@ -29,12 +29,12 @@ class ProjectEntity {
             sector_id: this.sector_id,
             maturity: this.maturity
         };
-        
+
         // Only include id if it's set (for updates)
         if (this.id !== null) {
             obj.id = this.id;
         }
-        
+
         return obj;
     }
 }
