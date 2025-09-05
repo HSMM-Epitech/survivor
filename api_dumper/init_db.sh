@@ -76,5 +76,12 @@ DB_PORT=$DB_PORT
 DATABASE_URL="postgresql://$DB_USER:$DB_PASS@$DB_HOST:$DB_PORT/$DB_NAME"
 EOF
 
+# I want to search for the backend dir in the survivor project, then mv the .env file there
+BACKEND_DIR=$(find ../.. -type d -name "backend" 2>/dev/null | head -n 1 || echo "")
+if [ -n "$BACKEND_DIR" ]; then
+    cp "$ENV_FILE" "$BACKEND_DIR/$ENV_FILE"
+    ENV_FILE="$BACKEND_DIR/$ENV_FILE"
+fi
+
 echo "✅ .env mis à jour avec les infos PostgreSQL.
 Random password généré pour l'utilisateur '$DB_USER' : trouvable dans '$ENV_FILE'."
