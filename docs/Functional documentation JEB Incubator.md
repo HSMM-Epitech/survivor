@@ -1,88 +1,162 @@
 
-This documentation describes the different features of the **JEB Incubator** website. Your experience depends on your account type, which can be:
-- unauthenticated
-- startup
-- investor
-- admin
+# 🚀 JEB Incubator - Functional Documentation
 
+This documentation describes the different features of the **JEB Incubator** website. Your experience depends on your account type:
 
----
-### 1. Features for unauthenticated users
-
-There is a part of the website that you can access without account, known as the **public part**.
-#### 1.1 Homepage
-This is the page you land on, when opening the website. This page is also accessible upon pressing the logo or the "Home" (first) button in the Navigation Bar.
-
-You can find here featured startups.
-#### 1.2 Search
-Use this page to search a specific startup. You can access this page by pressing the "search" (second) button in the Navigation Bar. 
-
-Several filters are available, including "by name", "by creation date", "match in description". You can also use a combination of filters. Select a startup to see details and recent updates.
-
-#### 1.3 Discover
-Use this page to discover new startups. You can access this page by pressing the "discover" (third) button in the Navigation Bar.
-
-Our algorithm will show you new, innovative startups you can browse. Select a startup to see details and recent updates.
-
-#### 1.4 Profile
-
-Once you are logged in, the page shows basic account information and a "dashboard" button.
-
+| Account Type | Description |
+|-------------|-------------|
+| 🌐 **Unauthenticated** | General public access |
+| 🏢 **Startup** | Entrepreneurs and their companies |
+| 💰 **Investor** | Investment professionals |
+| ⚙️ **Admin** | Platform administrators |
 
 ---
+## 🌐 1. Features for Unauthenticated Users
 
-### 2. User journey for startups
+> **ℹ️ Note:** There is a part of the website that you can access without an account, known as the **public part**.
 
-In addition to the [[Functional documentation JEB Incubator#1. Features for unauthenticated users|features for unauthenticated users]], you have access to a custom dashboard page. Access your dashboard by pressing the "dashboard" button in the [[Functional documentation JEB Incubator#1.4 Profile|profile]] page.
+### 🏠 1.1 Homepage
 
-#### 2.1 Profile creation
-First, go to the [[Functional documentation JEB Incubator#1.4 Profile|profile]] page. Use the signup option to create the **account** of the startup. Select the corresponding option in the field "type of account". Then, go to your dashboard. You will land on the "informations" page. You can fill the fields the way you want to adjust your profile in the [[Functional documentation JEB Incubator#1. Features for unauthenticated users|public space]]. Others can access your profile through [[Functional documentation JEB Incubator#1.2 Search|search]] and [[Functional documentation JEB Incubator#1.3 Discover|discover]] pages.
+This is the page you land on when opening the website. This page is also accessible upon pressing the logo or the `"Home"` (first) button in the Navigation Bar.
 
-#### 2.2 Creating updates
-Go to your dashboard (cf [[Functional documentation JEB Incubator#1.4 Profile|profile]]) and navigate to the "updates" tab. You enter an interface to create and manage previous updates. The updates are displayed under your profile in the [[Functional documentation JEB Incubator#1. Features for unauthenticated users|public space]].
+**✨ Key Feature:** You can find featured startups here.
 
-#### 2.3 Messaging
-Go to your dashboard (cf [[Functional documentation JEB Incubator#1.4 Profile|profile]]) and navigate to the "messaging" tab. Here, **as a startup**, you can discuss with investors or others startups. In the case of investors, there is an indicator whether the investor is support your project, or is interested.
+### 🔍 1.2 Search
 
+Use this page to search for a specific startup. You can access this page by pressing the `"Search"` (second) button in the Navigation Bar.
 
----
+**Available Filters:**
+- 📝 By name
+- 📅 By creation date  
+- 📄 Match in description
+- 🔗 Combination of filters
 
-### 3. User journey for investors
+**Action:** Select a startup to see details and recent updates.
 
-In addition to the [[Functional documentation JEB Incubator#1. Features for unauthenticated users|features for unauthenticated users]], you dispose a custom dashboard page. Access your dashboard by pressing the "dashboard" button in the [[Functional documentation JEB Incubator#1.4 Profile|profile]] page.
+### 🎯 1.3 Discover
 
-#### 3.1 Account creation
-To create an investor account, go to the [[Functional documentation JEB Incubator#1.4 Profile|profile]] page. Use the signup option to create your **account**. Select the corresponding option in the field "type of account".
+Use this page to discover new startups. You can access this page by pressing the `"Discover"` (third) button in the Navigation Bar.
 
-#### 3.2 Search and contact startups
-As an investor, when logged in, you have access to a new "contact" button on startup profiles in the [[Functional documentation JEB Incubator#1. Features for unauthenticated users|public space]]. You can find these profiles in the [[Functional documentation JEB Incubator#1.2 Search|search]] and [[Functional documentation JEB Incubator#1.3 Discover|discover]] pages. The button will redirect you to the messaging interface.
+**How it works:** Our algorithm will show you new, innovative startups you can browse. Select a startup to see details and recent updates.
 
-You can also go to your dashboard to find all of your messages in one place.
+### 👤 1.4 Profile
 
+Once you are logged in, the page shows:
+- Basic account information
+- 📊 Dashboard button
 
 ---
 
-### 4. Admin guide
+## 🏢 2. User Journey for Startups
 
-As an admin, you also dispose the [[Functional documentation JEB Incubator#1. Features for unauthenticated users|features for unauthenticated users]]. Access your dashboard by pressing the "dashboard" button in the [[Functional documentation JEB Incubator#1.4 Profile|profile]] page. 
+> **Prerequisites:** In addition to the [[#🌐 1. Features for Unauthenticated Users|features for unauthenticated users]], you have access to a custom dashboard page. Access your dashboard by pressing the `"Dashboard"` button in the [[#👤 1.4 Profile|profile]] page.
 
-#### 4.1 Account creation
+### 🆕 2.1 Profile Creation
 
-Unlike other types of account, you **can not create** an admin account. You will need to contact support to do so. After many verification processes. You will receive temporary credentials to your admin account. Please **change the temporary password**. 
+**Step-by-step process:**
 
-#### 4.2 Stats
+1. 📍 Go to the [[#👤 1.4 Profile|profile]] page
+2. ✍️ Use the signup option to create the **account** of the startup
+3. 🏷️ Select the corresponding option in the field `"type of account"`
+4. 📊 Go to your dashboard (you will land on the `"informations"` page)
+5. ✏️ Fill the fields to adjust your profile in the [[#🌐 1. Features for Unauthenticated Users|public space]]
 
-In your dashboard, you land on the stats page. You can visualize data like affluence on the website, accounts created, messaging activity.
+**Visibility:** Others can access your profile through [[#🔍 1.2 Search|search]] and [[#🎯 1.3 Discover|discover]] pages.
 
-#### 4.3 Administrating the website
+### 📢 2.2 Creating Updates
 
-In your dashboard, you can access the **administration interface**. Use filters to select startup or users.
+**Navigation:** Go to your dashboard (cf [[#👤 1.4 Profile|profile]]) → Navigate to the `"updates"` tab
 
-**For startups**, you can:
-- Add projects
-- Delete projects
-- Edit a field in their [[Functional documentation JEB Incubator#1. Features for unauthenticated users|public space]] profile.
+**Features:**
+- ✍️ Interface to create updates
+- 📋 Manage previous updates
+- 👁️ Updates are displayed under your profile in the [[#🌐 1. Features for Unauthenticated Users|public space]]
 
-**For users**, you can:
-- Generate a new, **temporary** password
-- Suspend an account
+### 💬 2.3 Messaging
+
+**Navigation:** Go to your dashboard (cf [[#👤 1.4 Profile|profile]]) → Navigate to the `"messaging"` tab
+
+**As a startup, you can:**
+- 🤝 Discuss with investors
+- 💼 Communicate with other startups
+
+**Investor Indicators:**
+- ✅ Investor supports your project
+- 👀 Investor is interested
+
+---
+
+## 💰 3. User Journey for Investors
+
+> **Prerequisites:** In addition to the [[#🌐 1. Features for Unauthenticated Users|features for unauthenticated users]], you have access to a custom dashboard page. Access your dashboard by pressing the `"Dashboard"` button in the [[#👤 1.4 Profile|profile]] page.
+
+### 🆕 3.1 Account Creation
+
+**How to create an investor account:**
+
+1. 📍 Go to the [[#👤 1.4 Profile|profile]] page
+2. ✍️ Use the signup option to create your **account**
+3. 🏷️ Select the corresponding option in the field `"type of account"`
+
+### 🤝 3.2 Search and Contact Startups
+
+**Enhanced Features for Investors:**
+
+When logged in, you have access to a new `"Contact"` button on startup profiles in the [[#🌐 1. Features for Unauthenticated Users|features for unauthenticated users]].
+
+**Where to find startups:**
+- 🔍 [[#🔍 1.2 Search|Search]] pages
+- 🎯 [[#🎯 1.3 Discover|Discover]] pages
+
+**Action:** The contact button will redirect you to the messaging interface.
+
+**Dashboard Access:** You can also go to your dashboard to find all of your messages in one place.
+
+---
+
+## ⚙️ 4. Admin Guide
+
+> **Prerequisites:** As an admin, you also have access to the [[#🌐 1. Features for Unauthenticated Users|features for unauthenticated users]] Access your dashboard by pressing the `"Dashboard"` button in the [[Functional documentation JEB Incubator#👤 1.4 Profile|profile]] page.
+
+### 🔐 4.1 Account Creation
+
+> **⚠️ Important:** Unlike other types of accounts, you **cannot create** an admin account yourself.
+
+**Account Creation Process:**
+
+1. 📞 Contact support to request an admin account
+2. 🔍 Complete verification processes
+3. 📧 Receive temporary credentials to your admin account
+4. 🔑 **Change the temporary password** immediately
+
+### 📊 4.2 Stats
+
+**Dashboard Overview:**
+When you access your dashboard, you land on the stats page where you can visualize:
+
+| Metric                    | Description              |
+| ------------------------- | ------------------------ |
+| 📈 **Website Traffic**    | Affluence on the website |
+| 👥 **Accounts Created**   | New user registrations   |
+| 💬 **Messaging Activity** | Communication statistics |
+
+### 🛠️ 4.3 Administrating the Website
+
+**Access:** In your dashboard, you can access the **administration interface**
+
+**User Management:** Use filters to select startups or users
+
+#### For Startups 🏢
+
+| Action                | Description                                                                                |
+| --------------------- | ------------------------------------------------------------------------------------------ |
+| ➕ **Add projects**    | Create new startup profiles                                                                |
+| ❌ **Delete projects** | Remove startup profiles                                                                    |
+| ✏️ **Edit profiles**  | Modify fields in their [[#🌐 1. Features for Unauthenticated Users\|public space]] profile |
+
+#### For Users 👥
+
+| Action | Description |
+|--------|-------------|
+| 🔑 **Generate password** | Create a new **temporary** password |
+| ⏸️ **Suspend account** | Temporarily disable user access |
