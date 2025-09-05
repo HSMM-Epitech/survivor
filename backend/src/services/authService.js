@@ -1,5 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const AccountRepository = require("@repositories/accountRepository");
+const CompanyRepository = require("@repositories/companyRepository");
 const StartupRepository = require("@repositories/startupRepository");
 const StartupEntity = require("@entities/Startup");
 
@@ -11,24 +13,50 @@ class AuthService {
     }
 
     async signup({ name, email, password }) {
-        const existing = await this.startupRepo.findByEmail(email);
-        if (existing) throw new Error("Email already in use");
+        const [existingAccount, existingCompany] = await Promise.all([
+            AccountRepository.findByEmail(email),
+            CompanyRepository.findByName(name)
+        ]);
 
-        const hashed = await bcrypt.hash(password, 10);
-        const startup = await this.startupRepo.create({ name, email, password: hashed });
-        return this.generateToken(startup);
+        if (existingAccount) throw new Error("Email already in use");
+        if (existingCompany) throw new Error("Company name already in use");
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const account = await AccountRepository.create({
+            name,
+            email,
+            password: hashedPassword
+        });
+
+        const company = await CompanyRepository.create({
+            account_id: account.id,
+            name
+        });
+
+        const startup = await StartupRepository.create({
+            company_id: company.id
+        });
+
+        const payload = { startupId: startup.id };
+        return jwt.sign(payload, this.jwtSecret, { expiresIn: this.tokenExpiry });
     }
 
     async login(email, password) {
-        const startupData = await this.startupRepo.findByEmail(email);
-        if (!startupData) throw new Error("Startup not found");
+        const account = await AccountRepository.findByEmail(email);
+        if (!account) throw new Error("Account not found");
 
-        const startup = new StartupEntity(startupData);
-
-        const valid = await bcrypt.compare(password, startup.password);
+        const valid = await bcrypt.compare(password, account.password);
         if (!valid) throw new Error("Invalid password");
 
-        return this.generateToken(startup);
+        const company = await CompanyRepository.findByAccountId(account.id);
+        if (!company) throw new Error("Company not found");
+
+        const startup = await StartupRepository.findByCompanyId(company.id);
+        if (!startup) throw new Error("Startup not found");
+
+        const payload = { startupId: startup.id };
+        return jwt.sign(payload, this.jwtSecret, { expiresIn: this.tokenExpiry });
     }
 
     generateToken(startup) {

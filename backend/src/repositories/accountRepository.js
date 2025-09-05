@@ -17,6 +17,18 @@ class AccountRepository {
             data
         });
     }
+
+    static async findByEmail(email) {
+        return prisma.accounts.findUnique({
+            where: { email }
+        });
+    }
+
+    static async delete(id) {
+        return prisma.accounts.delete({
+            where: { id }
+        });
+    }
 }
 
 module.exports = AccountRepository;

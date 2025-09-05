@@ -1,7 +1,10 @@
 const express = require("express");
-const { signupController } = require("@controllers/authController");
-const { loginController } = require("@controllers/authController");
 const router = express.Router();
+const StartupController = require("@controllers/startupController");
 
-router.post("/signup", signupController);
-router.post("/login", loginController);
+router.get("/", StartupController.getAll);
+router.get("/:id", StartupController.getById);
+router.put("/:id", StartupController.update);
+router.delete("/:id", StartupController.delete);
+
+module.exports = router;

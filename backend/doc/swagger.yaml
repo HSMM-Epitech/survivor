@@ -284,7 +284,102 @@ paths:
         '404':
           description: User not found
 
+  /startups:
+    get:
+      summary: Get all startups
+      tags:
+        - Startups
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: List of startups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Startup'
+
+  /startups/{id}:
+    get:
+      summary: Get a startup by ID
+      tags:
+        - Startups
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Startup found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Startup'
+        '404':
+          description: Startup not found
+
+    put:
+      summary: Update a startup by ID
+      tags:
+        - Startups
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                website_url:
+                  type: string
+      responses:
+        '200':
+          description: Startup updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Startup'
+        '404':
+          description: Startup not found
+
+    delete:
+      summary: Delete a startup by ID
+      tags:
+        - Startups
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Startup deleted successfully
+        '404':
+          description: Startup not found
+
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
     Project:
       type: object
@@ -320,9 +415,6 @@ components:
           type: string
           format: date-time
           description: Last update timestamp
-        Startups:
-          $ref: '#/components/schemas/Startup'
-          description: Associated startup information
 
     ProjectCreateRequest:
       type: object

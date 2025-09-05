@@ -11,12 +11,17 @@ const swaggerDocument = YAML.load("./doc/swagger.yaml");
 // Middleware pour parser le JSON
 app.use(express.json());
 
+// Middleware pour parser les données URL-encoded
+app.use(express.urlencoded({ extended: true }));
+
 // Swagger documentation route
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Routes
 app.use('/users', require('@routes/user'));
 app.use('/projects', require('@routes/project'));
+app.use('/auth', require('@routes/auth'));
+app.use('/startups', require('@routes/startup'));
 
 app.get('/', (req, res) => {
     res.send('Hello Otter World !');

@@ -68,11 +68,10 @@ model EventsCategories {
 }
 
 model Founders {
-  id         Int      @id @default(autoincrement())
-  user_id    Int
-  startup_id Int
-  Startups   Startups @relation(fields: [startup_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Users      Users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id               Int                @id @default(autoincrement())
+  user_id          Int
+  Users            Users              @relation(fields: [user_id], references: [id], onDelete: NoAction)
+  StartupsFounders StartupsFounders[]
 }
 
 model InvestmentFocus {
@@ -168,12 +167,12 @@ model SocialMedias {
 }
 
 model Startups {
-  id          Int        @id @default(autoincrement())
-  company_id  Int
-  website_url String?    @db.VarChar(300)
-  Founders    Founders[]
-  Projects    Projects[]
-  Companies   Companies  @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id               Int                @id @default(autoincrement())
+  company_id       Int
+  website_url      String?            @db.VarChar(300)
+  Projects         Projects[]
+  Companies        Companies          @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  StartupsFounders StartupsFounders[]
 }
 
 model TargetAudiences {
@@ -188,11 +187,19 @@ model Users {
   Admins     Admins[]
   Founders   Founders[]
   Investors  Investors[]
-  account    Accounts @relation(fields: [account_id], references: [id])
+  account    Accounts    @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model ValidationErrors {
   id                  Int    @id @default(autoincrement())
   unformatted_message String
   type                String @unique @db.VarChar(255)
+}
+
+model StartupsFounders {
+  id         Int      @id @default(autoincrement())
+  startup_id Int
+  founder_id Int
+  Founders   Founders @relation(fields: [founder_id], references: [id], onDelete: Cascade)
+  Startups   Startups @relation(fields: [startup_id], references: [id], onDelete: Cascade)
 }
