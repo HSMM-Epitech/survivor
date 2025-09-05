@@ -51,32 +51,32 @@ Once you are logged in, the page shows:
 
 ## 🏢 2. User Journey for Startups
 
-> **Prerequisites:** In addition to the [features for unauthenticated users](#🌐-1-features-for-unauthenticated-users), you have access to a custom dashboard page. Access your dashboard by pressing the `"Dashboard"` button in the [profile](#👤-14-profile) page.
+> **Prerequisites:** In addition to the [features for unauthenticated users](#1-features-for-unauthenticated-users), you have access to a custom dashboard page. Access your dashboard by pressing the `"Dashboard"` button in the [profile](#14-profile) page.
 
 ### 🆕 2.1 Profile Creation
 
 **Step-by-step process:**
 
-1. 📍 Go to the [profile](#👤-14-profile) page
+1. 📍 Go to the [profile](#14-profile) page
 2. ✍️ Use the signup option to create the **account** of the startup
 3. 🏷️ Select the corresponding option in the field `"type of account"`
 4. 📊 Go to your dashboard (you will land on the `"informations"` page)
-5. ✏️ Fill the fields to adjust your profile in the [public space](#🌐-1-features-for-unauthenticated-users)
+5. ✏️ Fill the fields to adjust your profile in the [public space](#1-features-for-unauthenticated-users)
 
-**Visibility:** Others can access your profile through [search](#🔍-12-search) and [discover](#🎯-13-discover) pages.
+**Visibility:** Others can access your profile through [search](#12-search) and [discover](#13-discover) pages.
 
 ### 📢 2.2 Creating Updates
 
-**Navigation:** Go to your dashboard (cf [profile](#👤-14-profile)) → Navigate to the `"updates"` tab
+**Navigation:** Go to your dashboard (cf [profile](#14-profile)) → Navigate to the `"updates"` tab
 
 **Features:**
 - ✍️ Interface to create updates
 - 📋 Manage previous updates
-- 👁️ Updates are displayed under your profile in the [public space](#🌐-1-features-for-unauthenticated-users)
+- 👁️ Updates are displayed under your profile in the [public space](#1-features-for-unauthenticated-users)
 
 ### 💬 2.3 Messaging
 
-**Navigation:** Go to your dashboard (cf [profile](#👤-14-profile)) → Navigate to the `"messaging"` tab
+**Navigation:** Go to your dashboard (cf [profile](#14-profile)) → Navigate to the `"messaging"` tab
 
 **As a startup, you can:**
 - 🤝 Discuss with investors
@@ -90,13 +90,13 @@ Once you are logged in, the page shows:
 
 ## 💰 3. User Journey for Investors
 
-> **Prerequisites:** In addition to the [features for unauthenticated users](#🌐-1-features-for-unauthenticated-users), you have access to a custom dashboard page. Access your dashboard by pressing the `"Dashboard"` button in the [profile](#👤-14-profile) page.
+> **Prerequisites:** In addition to the [features for unauthenticated users](#1-features-for-unauthenticated-users), you have access to a custom dashboard page. Access your dashboard by pressing the `"Dashboard"` button in the [profile](#14-profile) page.
 
 ### 🆕 3.1 Account Creation
 
 **How to create an investor account:**
 
-1. 📍 Go to the [profile](#👤-14-profile) page
+1. 📍 Go to the [profile](#14-profile) page
 2. ✍️ Use the signup option to create your **account**
 3. 🏷️ Select the corresponding option in the field `"type of account"`
 
@@ -104,11 +104,11 @@ Once you are logged in, the page shows:
 
 **Enhanced Features for Investors:**
 
-When logged in, you have access to a new `"Contact"` button on startup profiles in the [public space](#🌐-1-features-for-unauthenticated-users).
+When logged in, you have access to a new `"Contact"` button on startup profiles in the [public space](#1-features-for-unauthenticated-users).
 
 **Where to find startups:**
-- 🔍 [Search](#🔍-12-search) pages
-- 🎯 [Discover](#🎯-13-discover) pages
+- 🔍 [Search](#12-search) pages
+- 🎯 [Discover](#13-discover) pages
 
 **Action:** The contact button will redirect you to the messaging interface.
 
@@ -118,7 +118,7 @@ When logged in, you have access to a new `"Contact"` button on startup profiles 
 
 ## ⚙️ 4. Admin Guide
 
-> **Prerequisites:** As an admin, you also have access to the [features for unauthenticated users](#🌐-1-features-for-unauthenticated-users). Access your dashboard by pressing the `"Dashboard"` button in the [profile](#👤-14-profile) page.
+> **Prerequisites:** As an admin, you also have access to the [features for unauthenticated users](#1-features-for-unauthenticated-users). Access your dashboard by pressing the `"Dashboard"` button in the [profile](#14-profile) page.
 
 ### 🔐 4.1 Account Creation
 
@@ -154,7 +154,7 @@ When you access your dashboard, you land on the stats page where you can visuali
 | --------------------- | ------------------------------------------------------------------------------------------ |
 | ➕ **Add projects**    | Create new startup profiles                                                                |
 | ❌ **Delete projects** | Remove startup profiles                                                                    |
-| ✏️ **Edit profiles**  | Modify fields in their [public space](#🌐-1-features-for-unauthenticated-users) profile |
+| ✏️ **Edit profiles**  | Modify fields in their [public space](#1-features-for-unauthenticated-users) profile |
 
 #### For Users 👥
 
